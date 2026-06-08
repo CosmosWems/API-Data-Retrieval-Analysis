@@ -1,0 +1,923 @@
+/* ================================================================
+   styles.css  –  OpenAQ Explorer
+   Theme: dark terminal / satellite-ops aesthetic
+           cyan + phosphor-green accents on near-black surfaces
+   Light override: class "theme-light" on <body> flips all vars
+================================================================ */
+
+/* ================================================================
+   1.  Adding the GOOGLE FONT
+================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ================================================================
+   2.  CSS CUSTOM PROPERTIES  (dark = default)
+================================================================ */
+:root {
+  /* backgrounds */
+  --bg-base      : #050d05;
+  --bg-surface   : #0a150a;
+  --bg-card      : #0f1f0f;
+  --bg-input     : #0c1c0c;
+  --bg-header    : #040c04;
+  --bg-sidebar   : #030b03;
+
+  /* borders / dividers */
+  --border-dim   : #1a2e1a;
+  --border-mid   : #1f3d1f;
+  --border-hi    : #00e5ff33;
+
+  /* text */
+  --text-base    : #a8c8a8;
+  --text-bright  : #d4f0d4;
+  --text-muted   : #4a6e4a;
+  --text-label   : #7ab87a;
+
+  /* accents */
+  --accent-cyan  : #00e5ff;
+  --accent-green : #00ff87;
+  --accent-green2: #39ff14;  /* neon green for small chips */
+  --accent-amber : #ffc107;
+  --accent-red   : #ff1744;
+
+  /* status */
+  --status-ok-bg : #001a0d;
+  --status-ok-bd : #00c853;
+  --status-ok-tx : #69f0ae;
+  --status-wn-bg : #1a1200;
+  --status-wn-bd : #ffc107;
+  --status-wn-tx : #ffe57f;
+  --status-er-bg : #1a0005;
+  --status-er-bd : #ff1744;
+  --status-er-tx : #ff8a80;
+  --status-nt-bg : #061006;
+  --status-nt-bd : #2e5c2e;
+  --status-nt-tx : #6a9e6a;
+
+  /* box headers */
+  --box-primary  : #001a1a;
+  --box-success  : #001a0a;
+  --box-warning  : #1a1200;
+  --box-info     : #00101a;
+  --box-danger   : #1a0005;
+
+  /* misc */
+  --scrollbar-bg : #0a150a;
+  --scrollbar-th : #1f3d1f;
+  --scan-opacity : 0.018;    /* CRT scan-line intensity */
+
+  /* typography */
+  --font-mono    : 'Share Tech Mono', 'Courier New', monospace;
+  --font-ui      : 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* ================================================================
+   3.  LIGHT THEME OVERRIDE
+       All variables re-assigned; no selector changes needed.
+================================================================ */
+body.theme-light {
+  --bg-base      : #f0f4f0;
+  --bg-surface   : #f7faf7;
+  --bg-card      : #ffffff;
+  --bg-input     : #ffffff;
+  --bg-header    : #ffffff;
+  --bg-sidebar   : #1a2f1a;   /* keep dark sidebar in light mode */
+
+  --border-dim   : #d0ddd0;
+  --border-mid   : #b0c8b0;
+  --border-hi    : #00800033;
+
+  --text-base    : #2a3d2a;
+  --text-bright  : #0a1a0a;
+  --text-muted   : #7a9a7a;
+  --text-label   : #2e5c2e;
+
+  --accent-cyan  : #007b8a;
+  --accent-green : #007a40;
+  --accent-green2: #00a040;
+  --accent-amber : #b07800;
+  --accent-red   : #c0001a;
+
+  --status-ok-bg : #e8f5ee;
+  --status-ok-bd : #00a855;
+  --status-ok-tx : #005c2e;
+  --status-wn-bg : #fff8e0;
+  --status-wn-bd : #d09000;
+  --status-wn-tx : #7a5500;
+  --status-er-bg : #ffeaed;
+  --status-er-bd : #c0001a;
+  --status-er-tx : #800010;
+  --status-nt-bg : #f2f8f2;
+  --status-nt-bd : #80a880;
+  --status-nt-tx : #2e5c2e;
+
+  --box-primary  : #e0f0f8;
+  --box-success  : #e0f5ea;
+  --box-warning  : #fff8e0;
+  --box-info     : #e0f4f8;
+  --box-danger   : #ffeaed;
+
+  --scrollbar-bg : #e0e8e0;
+  --scrollbar-th : #90b890;
+  --scan-opacity : 0;
+
+  --font-mono    : 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* ================================================================
+   4.  GLOBAL RESET & BASE
+================================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body,
+.content-wrapper,
+.right-side {
+  background : var(--bg-base) !important;
+  color      : var(--text-base) !important;
+  font-family: var(--font-ui) !important;
+}
+
+/* CRT scan-line overlay (dark only, near-zero opacity) */
+body::before {
+  content   : "";
+  position  : fixed;
+  inset     : 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,255,135,var(--scan-opacity)) 2px,
+    rgba(0,255,135,var(--scan-opacity)) 4px
+  );
+  pointer-events: none;
+  z-index   : 9999;
+}
+
+/* ================================================================
+   5.  MAIN HEADER
+================================================================ */
+.skin-blue .main-header .navbar,
+.skin-blue .main-header .logo {
+  background : var(--bg-header)  !important;
+  border-bottom: 1px solid var(--border-mid) !important;
+}
+
+.skin-blue .main-header .logo {
+  font-family : var(--font-mono) !important;
+  font-size   : 15px !important;
+  letter-spacing: .06em;
+  color       : var(--accent-cyan) !important;
+}
+
+.skin-blue .main-header .navbar .nav > li > a {
+  color: var(--accent-cyan) !important;
+  font-size: 12px;
+  opacity: .85;
+}
+.skin-blue .main-header .navbar .nav > li > a:hover {
+  background : var(--bg-surface) !important;
+  opacity    : 1;
+}
+
+/* ---- theme toggle button in header -------------------------- */
+#theme-toggle-btn {
+  background  : transparent;
+  border      : 1px solid var(--border-mid);
+  border-radius: 4px;
+  color       : var(--accent-cyan);
+  font-size   : 11.5px;
+  padding     : 4px 10px;
+  cursor      : pointer;
+  margin-top  : 10px;
+  margin-right: 4px;
+  transition  : all .2s ease;
+  font-family : var(--font-mono);
+  letter-spacing: .04em;
+}
+#theme-toggle-btn:hover {
+  background   : var(--bg-surface);
+  border-color : var(--accent-cyan);
+  color        : var(--accent-green);
+}
+
+/* ================================================================
+   6.  SIDEBAR
+================================================================ */
+.main-sidebar,
+.left-side {
+  background : var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border-mid) !important;
+}
+
+.skin-blue .main-sidebar .sidebar-menu > li > a {
+  color        : var(--text-base) !important;
+  border-left  : 3px solid transparent !important;
+  font-size    : 13px;
+  padding      : 11px 14px 11px 16px;
+  letter-spacing: .015em;
+  transition   : all .15s ease;
+}
+.skin-blue .main-sidebar .sidebar-menu > li > a:hover {
+  background   : var(--bg-surface) !important;
+  border-left-color: var(--accent-cyan) !important;
+  color        : var(--accent-cyan) !important;
+}
+.skin-blue .main-sidebar .sidebar-menu > li.active > a {
+  background   : var(--bg-card) !important;
+  border-left-color: var(--accent-green) !important;
+  color        : var(--accent-green) !important;
+}
+
+/* sidebar icons – monochrome */
+.main-sidebar .sidebar-menu .fa,
+.main-sidebar .sidebar-menu .glyphicon {
+  color: var(--text-muted) !important;
+  width: 18px;
+  text-align: center;
+}
+.main-sidebar .sidebar-menu li.active .fa,
+.main-sidebar .sidebar-menu li.active .glyphicon,
+.main-sidebar .sidebar-menu li > a:hover .fa,
+.main-sidebar .sidebar-menu li > a:hover .glyphicon {
+  color: var(--accent-cyan) !important;
+}
+
+/* ================================================================
+   7.  API KEY PANEL
+================================================================ */
+.api-key-panel {
+  padding       : 14px 12px 12px;
+  background    : var(--bg-surface);
+  border-bottom : 1px solid var(--border-mid);
+  margin-bottom : 4px;
+}
+.api-key-panel label {
+  color         : var(--accent-cyan);
+  font-size     : 11.5px;
+  font-weight   : 600;
+  font-family   : var(--font-mono);
+  letter-spacing: .05em;
+  margin-bottom : 5px;
+  display       : block;
+}
+.api-key-panel .form-control {
+  background  : var(--bg-input) !important;
+  border      : 1px solid var(--border-mid) !important;
+  color       : var(--accent-green) !important;
+  border-radius: 4px;
+  font-size   : 12px;
+  font-family : var(--font-mono);
+  caret-color : var(--accent-green);
+}
+.api-key-panel .form-control:focus {
+  border-color: var(--accent-cyan) !important;
+  box-shadow  : 0 0 0 2px rgba(0,229,255,.15) !important;
+  outline     : none;
+}
+
+/* ================================================================
+   8.  CONNECTION BADGE
+================================================================ */
+.status-footer {
+  padding      : 10px 12px;
+  border-top   : 1px solid var(--border-mid);
+}
+.conn-badge {
+  display        : inline-flex;
+  align-items    : center;
+  gap            : 7px;
+  padding        : 5px 12px;
+  border-radius  : 3px;
+  font-size      : 11.5px;
+  font-weight    : 700;
+  font-family    : var(--font-mono);
+  letter-spacing : .06em;
+  width          : 100%;
+  justify-content: center;
+}
+.conn-ok      {
+  background : var(--status-ok-bg);
+  color      : var(--status-ok-tx);
+  border     : 1px solid var(--status-ok-bd);
+}
+.conn-fail    {
+  background : var(--status-er-bg);
+  color      : var(--status-er-tx);
+  border     : 1px solid var(--status-er-bd);
+}
+.conn-testing {
+  background : var(--status-nt-bg);
+  color      : var(--accent-cyan);
+  border     : 1px solid var(--border-mid);
+}
+
+/* ================================================================
+   9.  BOXES
+================================================================ */
+.box {
+  background    : var(--bg-card) !important;
+  border        : 1px solid var(--border-dim) !important;
+  border-top    : none !important;
+  border-radius : 4px !important;
+  box-shadow    : 0 0 14px rgba(0,229,255,.04) !important;
+}
+.box-header {
+  background    : var(--bg-surface) !important;
+  border-bottom : 1px solid var(--border-mid) !important;
+  border-radius : 4px 4px 0 0 !important;
+}
+.box-title {
+  color         : var(--accent-cyan) !important;
+  font-family   : var(--font-mono) !important;
+  font-size     : 13px !important;
+  letter-spacing: .04em;
+}
+/* coloured solid box headers → all use accent-cyan tint */
+.box.box-solid.box-primary > .box-header,
+.box.box-solid.box-success > .box-header,
+.box.box-solid.box-warning > .box-header,
+.box.box-solid.box-info    > .box-header,
+.box.box-solid.box-danger  > .box-header {
+  background : var(--bg-surface) !important;
+  border-left: 3px solid var(--accent-cyan) !important;
+}
+.box.box-solid.box-success > .box-header { border-left-color: var(--accent-green) !important; }
+.box.box-solid.box-warning > .box-header { border-left-color: var(--accent-amber) !important; }
+.box.box-solid.box-danger  > .box-header { border-left-color: var(--accent-red)   !important; }
+
+/* box icons – monochrome */
+.box-header .fa,
+.box-header .glyphicon {
+  color  : var(--text-muted) !important;
+}
+
+/* ================================================================
+   10.  SECTION HEADERS
+================================================================ */
+.sec-hdr {
+  font-family   : var(--font-mono);
+  font-size     : 15px;
+  font-weight   : 400;
+  color         : var(--accent-cyan);
+  padding       : 0 0 10px 0;
+  border-bottom : 1px solid var(--border-mid);
+  margin-bottom : 18px;
+  display       : flex;
+  align-items   : center;
+  gap           : 9px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.sec-hdr::before {
+  content     : ">";
+  color       : var(--accent-green2);
+  font-weight : 700;
+}
+.sec-hdr .fa,
+.sec-hdr .glyphicon {
+  color  : var(--text-muted) !important;
+  font-size: 13px;
+}
+
+/* ================================================================
+   11.  FORMS & INPUTS
+================================================================ */
+.form-control,
+.selectize-input {
+  background   : var(--bg-input)   !important;
+  border       : 1px solid var(--border-mid) !important;
+  color        : var(--text-bright) !important;
+  border-radius: 4px !important;
+  font-size    : 12.5px !important;
+  transition   : border-color .15s;
+}
+.form-control:focus,
+.selectize-input.focus {
+  border-color : var(--accent-cyan) !important;
+  box-shadow   : 0 0 0 2px rgba(0,229,255,.12) !important;
+  outline      : none !important;
+}
+
+/* labels */
+.control-label,
+.shiny-input-container label {
+  color       : var(--text-label) !important;
+  font-size   : 12px;
+  font-weight : 600;
+  letter-spacing: .02em;
+}
+/* help text */
+.help-block { color: var(--text-muted) !important; font-size: 11px; }
+
+/* selectize dropdown */
+.selectize-dropdown {
+  background   : var(--bg-card)  !important;
+  border       : 1px solid var(--border-mid) !important;
+  color        : var(--text-bright) !important;
+}
+.selectize-dropdown .option:hover,
+.selectize-dropdown .option.active {
+  background  : var(--bg-surface) !important;
+  color       : var(--accent-cyan) !important;
+}
+
+/* sliders */
+.irs--shiny .irs-bar,
+.irs--shiny .irs-bar-edge {
+  background  : var(--accent-cyan) !important;
+  border-color: var(--accent-cyan) !important;
+}
+.irs--shiny .irs-handle {
+  background  : var(--accent-green) !important;
+  border-color: var(--accent-green) !important;
+  box-shadow  : 0 0 6px var(--accent-green) !important;
+}
+.irs--shiny .irs-from,
+.irs--shiny .irs-to,
+.irs--shiny .irs-single { background: var(--accent-cyan) !important; color: #000 !important; }
+
+/* checkboxes */
+.checkbox label,
+.radio   label { color: var(--text-base) !important; font-size: 12.5px; }
+
+/* date range input */
+.input-daterange .form-control { font-family: var(--font-mono); }
+
+/* ================================================================
+   12.  BUTTONS
+================================================================ */
+.btn {
+  font-family   : var(--font-mono) !important;
+  letter-spacing: .04em;
+  border-radius : 3px !important;
+  transition    : all .15s ease !important;
+}
+.btn-primary {
+  background  : transparent    !important;
+  border      : 1px solid var(--accent-cyan) !important;
+  color       : var(--accent-cyan) !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background  : rgba(0,229,255,.12) !important;
+  box-shadow  : 0 0 8px rgba(0,229,255,.3) !important;
+}
+.btn-success {
+  background  : transparent    !important;
+  border      : 1px solid var(--accent-green) !important;
+  color       : var(--accent-green) !important;
+}
+.btn-success:hover, .btn-success:focus {
+  background  : rgba(0,255,135,.12) !important;
+  box-shadow  : 0 0 8px rgba(0,255,135,.3) !important;
+}
+.btn-danger {
+  background  : transparent    !important;
+  border      : 1px solid var(--accent-red) !important;
+  color       : var(--accent-red) !important;
+}
+.btn-danger:hover {
+  background  : rgba(255,23,68,.12) !important;
+}
+.btn-default {
+  background  : transparent    !important;
+  border      : 1px solid var(--border-mid) !important;
+  color       : var(--text-base) !important;
+}
+.btn-default:hover {
+  border-color: var(--accent-cyan) !important;
+  color       : var(--accent-cyan) !important;
+}
+/* button icons – monochrome */
+.btn .fa, .btn .glyphicon {
+  color: inherit !important;
+}
+
+/* download buttons */
+.btn[id^="dl_"], .btn[id^="exp_"] {
+  border-color: var(--border-mid) !important;
+  color       : var(--text-label) !important;
+  font-size   : 11.5px !important;
+  margin-bottom: 3px;
+}
+.btn[id^="dl_"]:hover, .btn[id^="exp_"]:hover {
+  border-color: var(--accent-cyan) !important;
+  color       : var(--accent-cyan) !important;
+}
+
+/* ================================================================
+   13.  STATUS / ALERT BOXES
+================================================================ */
+.status-box {
+  border-radius : 3px;
+  padding       : 10px 14px;
+  font-size     : 12.5px;
+  line-height   : 1.6;
+  font-family   : var(--font-mono);
+  margin-bottom : 8px;
+}
+.status-ok      { background: var(--status-ok-bg); border-left: 3px solid var(--status-ok-bd); color: var(--status-ok-tx); }
+.status-warn    { background: var(--status-wn-bg); border-left: 3px solid var(--status-wn-bd); color: var(--status-wn-tx); }
+.status-error   { background: var(--status-er-bg); border-left: 3px solid var(--status-er-bd); color: var(--status-er-tx); }
+.status-neutral { background: var(--status-nt-bg); border-left: 3px solid var(--status-nt-bd); color: var(--status-nt-tx); }
+
+/* ================================================================
+   14.  LOCATION CARDS
+================================================================ */
+.scroll-area {
+  overflow-y: auto;
+  padding-right: 3px;
+}
+.scroll-area::-webkit-scrollbar { width: 5px; }
+.scroll-area::-webkit-scrollbar-track { background: var(--scrollbar-bg); }
+.scroll-area::-webkit-scrollbar-thumb { background: var(--scrollbar-th); border-radius: 3px; }
+
+.loc-card {
+  background   : var(--bg-surface);
+  border       : 1px solid var(--border-dim);
+  border-left  : 3px solid var(--border-mid);
+  border-radius: 3px;
+  padding      : 9px 12px;
+  margin-bottom: 6px;
+  cursor       : pointer;
+  position     : relative;
+  transition   : all .15s ease;
+}
+.loc-card:hover {
+  border-left-color: var(--accent-cyan);
+  background       : var(--bg-card);
+  box-shadow       : 0 0 10px rgba(0,229,255,.08);
+}
+.loc-card.selected {
+  border-left-color: var(--accent-green);
+  background       : var(--bg-card);
+  box-shadow       : 0 0 10px rgba(0,255,135,.08);
+}
+.loc-card-title {
+  font-weight   : 700;
+  font-size     : 13px;
+  color         : var(--text-bright);
+  font-family   : var(--font-mono);
+  margin-bottom : 3px;
+}
+.loc-card-sub  { font-size: 11.5px; color: var(--text-muted); margin-bottom: 2px; }
+.loc-card-meta { font-size: 11px;   color: var(--text-muted); font-family: var(--font-mono); }
+
+.loc-card-badge {
+  position     : absolute;
+  top          : 7px; right: 9px;
+  background   : var(--bg-base);
+  color        : var(--accent-cyan);
+  border       : 1px solid var(--border-mid);
+  border-radius: 20px;
+  padding      : 1px 7px;
+  font-size    : 10.5px;
+  font-family  : var(--font-mono);
+}
+
+/* ================================================================
+   15.  PARAMETER CHIPS
+================================================================ */
+.param-chip, .param-chip-sm {
+  display      : inline-block;
+  background   : var(--bg-base);
+  color        : var(--accent-cyan);
+  border       : 1px solid var(--border-mid);
+  border-radius: 2px;
+  padding      : 2px 8px;
+  font-size    : 11.5px;
+  font-family  : var(--font-mono);
+  margin       : 2px 2px;
+  letter-spacing: .04em;
+}
+.param-chip-sm { padding: 1px 6px; font-size: 10.5px; }
+
+.param-id {
+  display      : inline-block;
+  background   : var(--bg-base);
+  color        : var(--accent-green2);
+  border-radius: 2px;
+  padding      : 1px 5px;
+  font-size    : 10.5px;
+  font-family  : var(--font-mono);
+  border       : 1px solid var(--border-dim);
+}
+
+/* ================================================================
+   16.  PROGRESS BARS
+================================================================ */
+.progress {
+  height       : 13px;
+  border-radius: 2px;
+  background   : var(--bg-base);
+  border       : 1px solid var(--border-dim);
+  overflow     : hidden;
+}
+.progress-bar {
+  height       : 13px;
+  border-radius: 2px;
+  text-align   : right;
+  padding-right: 5px;
+  font-size    : 10.5px;
+  font-weight  : 700;
+  line-height  : 13px;
+  transition   : width .5s ease;
+  color        : #000 !important;
+  font-family  : var(--font-mono);
+}
+
+/* ================================================================
+   17.  VALUE BOXES
+================================================================ */
+.small-box {
+  background   : var(--bg-surface) !important;
+  border       : 1px solid var(--border-mid) !important;
+  border-radius: 4px !important;
+}
+.small-box h3     { color: var(--accent-cyan)  !important; font-family: var(--font-mono) !important; }
+.small-box p      { color: var(--text-label)   !important; font-size: 12px; }
+.small-box .icon  { color: var(--border-mid)   !important; }  /* muted icon */
+
+/* ================================================================
+   18.  DATA TABLES (DT)
+================================================================ */
+.dataTables_wrapper,
+table.dataTable {
+  color: var(--text-base) !important;
+}
+table.dataTable thead th {
+  background   : var(--bg-surface) !important;
+  color        : var(--accent-cyan) !important;
+  border-bottom: 1px solid var(--border-mid) !important;
+  font-family  : var(--font-mono) !important;
+  font-size    : 11.5px !important;
+  letter-spacing: .04em;
+}
+table.dataTable tbody tr {
+  background  : var(--bg-card) !important;
+  color       : var(--text-base) !important;
+}
+table.dataTable tbody tr:nth-child(even) {
+  background  : var(--bg-surface) !important;
+}
+table.dataTable tbody tr:hover {
+  background  : var(--bg-base) !important;
+  color       : var(--accent-cyan) !important;
+}
+.dataTables_info,
+.dataTables_paginate { color: var(--text-muted) !important; font-size: 11.5px; }
+.dataTables_paginate .paginate_button {
+  color        : var(--text-label) !important;
+  border       : 1px solid var(--border-dim) !important;
+  border-radius: 2px !important;
+}
+.dataTables_paginate .paginate_button.current,
+.dataTables_paginate .paginate_button:hover {
+  background  : var(--bg-surface) !important;
+  color       : var(--accent-cyan) !important;
+  border-color: var(--accent-cyan) !important;
+}
+.dataTables_filter input,
+.dataTables_length select {
+  background  : var(--bg-input)  !important;
+  border      : 1px solid var(--border-mid) !important;
+  color       : var(--text-bright) !important;
+}
+
+/* ================================================================
+   19.  MAP
+================================================================ */
+.leaflet-container { background: var(--bg-base) !important; }
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background  : var(--bg-card) !important;
+  color       : var(--text-bright) !important;
+  border      : 1px solid var(--border-mid) !important;
+  box-shadow  : 0 0 12px rgba(0,229,255,.12) !important;
+}
+.leaflet-popup-content { color: var(--text-base) !important; font-size: 12.5px; }
+.leaflet-popup-content b { color: var(--accent-cyan) !important; }
+.leaflet-control-zoom a {
+  background  : var(--bg-card) !important;
+  color       : var(--accent-cyan) !important;
+  border-color: var(--border-mid) !important;
+}
+.leaflet-control-zoom a:hover { background: var(--bg-surface) !important; }
+.leaflet-bar { border-color: var(--border-mid) !important; }
+
+/* ================================================================
+   20.  TABS
+================================================================ */
+.nav-tabs > li > a {
+  background  : var(--bg-surface) !important;
+  color       : var(--text-muted) !important;
+  border-color: var(--border-dim) !important;
+  font-size   : 12px;
+  font-family : var(--font-mono);
+  letter-spacing: .03em;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li > a:hover {
+  background   : var(--bg-card) !important;
+  color        : var(--accent-cyan) !important;
+  border-color : var(--border-mid) !important;
+  border-bottom: 2px solid var(--accent-cyan) !important;
+}
+.tab-content {
+  background  : var(--bg-card)   !important;
+  border      : 1px solid var(--border-dim) !important;
+  border-top  : none !important;
+  padding     : 14px;
+}
+
+/* ================================================================
+   21.  COORDINATE PILL
+================================================================ */
+.coord-pill {
+  background   : var(--bg-surface);
+  border       : 1px solid var(--border-mid);
+  border-radius: 20px;
+  padding      : 4px 12px;
+  font-size    : 11.5px;
+  color        : var(--accent-cyan);
+  display      : inline-flex;
+  align-items  : center;
+  gap          : 6px;
+  font-family  : var(--font-mono);
+}
+
+/* ================================================================
+   22.  PLOT INFO BAR
+================================================================ */
+.plot-info-bar {
+  background  : var(--bg-surface);
+  border-left : 3px solid var(--accent-cyan);
+  border-radius: 2px;
+  padding     : 8px 12px;
+  color       : var(--text-base);
+  font-size   : 12.5px;
+  line-height : 1.6;
+}
+
+/* ================================================================
+   23.  HELP PAGE
+================================================================ */
+.help-dl dt { font-weight: 700; color: var(--accent-cyan); margin-top: 10px; font-family: var(--font-mono); }
+.help-dl dd { margin-left: 14px; color: var(--text-base); font-size: 12.5px; }
+.help-dl a  { color: var(--accent-cyan) !important; text-decoration: none; border-bottom: 1px dotted var(--border-mid); }
+.help-dl a:hover { color: var(--accent-green) !important; }
+
+/* pre / code blocks */
+pre, code {
+  background  : var(--bg-base)   !important;
+  color       : var(--accent-green2) !important;
+  border      : 1px solid var(--border-dim) !important;
+  border-radius: 3px !important;
+  font-family : var(--font-mono) !important;
+  font-size   : 11.5px !important;
+}
+.verbatim-text-output {
+  background  : var(--bg-base)   !important;
+  color       : var(--accent-green2) !important;
+  border      : 1px solid var(--border-dim) !important;
+  font-family : var(--font-mono) !important;
+  font-size   : 12px !important;
+  padding     : 12px !important;
+}
+
+/* ================================================================
+   24.  SHINY NOTIFICATIONS
+================================================================ */
+.shiny-notification {
+  background   : var(--bg-card)  !important;
+  border       : 1px solid var(--border-mid) !important;
+  color        : var(--text-bright) !important;
+  border-radius: 3px !important;
+  font-family  : var(--font-mono) !important;
+  font-size    : 12.5px !important;
+  border-left  : 3px solid var(--accent-cyan) !important;
+  max-width    : 400px !important;
+}
+.shiny-notification.shiny-notification-message {
+  border-left-color: var(--accent-green) !important;
+}
+.shiny-notification.shiny-notification-warning {
+  border-left-color: var(--accent-amber) !important;
+}
+.shiny-notification.shiny-notification-error {
+  border-left-color: var(--accent-red) !important;
+}
+.shiny-notification-close { color: var(--text-muted) !important; }
+
+/* ================================================================
+   25.  FOOTER
+================================================================ */
+.main-footer {
+  text-align  : center;
+  padding     : 9px;
+  font-size   : 11px;
+  color       : var(--text-muted);
+  border-top  : 1px solid var(--border-dim);
+  margin-top  : 20px;
+  font-family : var(--font-mono);
+  letter-spacing: .04em;
+  background  : var(--bg-base) !important;
+}
+.main-footer a { color: var(--accent-cyan) !important; }
+
+/* ================================================================
+   26.  MISC OVERRIDES
+================================================================ */
+/* content area padding */
+.content { padding: 15px 15px 0 !important; }
+
+/* hr lines */
+hr { border-color: var(--border-dim) !important; margin: 12px 0; }
+
+/* small tags */
+small, .small { color: var(--text-muted) !important; }
+
+/* links */
+a { color: var(--accent-cyan) !important; }
+a:hover { color: var(--accent-green) !important; }
+
+/* shiny progress bar */
+#shiny-progress-container .progress .bar,
+#shiny-progress-container .progress-bar {
+  background: var(--accent-cyan) !important;
+}
+#shiny-progress-container .progress-text .progress-message {
+  color: var(--text-base) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 12px !important;
+}
+
+/* loading spinner */
+.shiny-spinner-output-container .load-container .load7 .line {
+  background: var(--accent-cyan) !important;
+}
+
+/* ================================================================
+   27.  LIGHT MODE SPECIFICS
+       A few rules need slight adjustment in light mode
+================================================================ */
+body.theme-light .box {
+  box-shadow: 0 1px 4px rgba(0,0,0,.08) !important;
+}
+body.theme-light .loc-card:hover {
+  box-shadow: 0 2px 8px rgba(0,128,100,.12);
+}
+body.theme-light .btn-primary {
+  background: rgba(0,123,138,.08) !important;
+}
+body.theme-light .btn-success {
+  background: rgba(0,122,64,.08) !important;
+}
+body.theme-light pre,
+body.theme-light code,
+body.theme-light .verbatim-text-output {
+  background: #f4f8f4 !important;
+  color: #1a4030 !important;
+}
+body.theme-light .sec-hdr::before {
+  color: var(--accent-green2);
+}
+
+/* ================================================================
+   28.  RESPONSIVE
+================================================================ */
+@media (max-width: 768px) {
+  .sec-hdr     { font-size: 12px; }
+  .loc-card-title { font-size: 12px; }
+  .box-title   { font-size: 12px !important; }
+}
+
+/* ================================================================
+   29.  ABOUT TAB EXTRAS
+================================================================ */
+
+/* workflow step rows – hover highlight */
+.about-step:hover {
+  background: var(--bg-surface);
+  border-radius: 3px;
+}
+
+/* tech-stack table */
+.tab-content table.table-condensed td,
+.tab-content table.table-condensed th {
+  padding     : 6px 10px !important;
+  border-color: var(--border-dim) !important;
+  font-size   : 12.5px !important;
+  color       : var(--text-base) !important;
+}
+.tab-content table.table-condensed code {
+  font-size : 11.5px !important;
+  padding   : 1px 5px;
+  background: var(--bg-base) !important;
+  color     : var(--accent-green2) !important;
+  border    : 1px solid var(--border-dim) !important;
+}
+.tab-content table.table-condensed tr:hover td {
+  color: var(--accent-cyan) !important;
+}
